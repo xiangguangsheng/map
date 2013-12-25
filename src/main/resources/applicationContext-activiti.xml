@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        ">
+
+<!-- jpa 方式集成 activiti -->
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+		<property name="dataSource" ref="c3p0DataSource" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="databaseSchemaUpdate" value="true" />
+		<!--
+			jpaEntityManagerFactory: 一个实现了javax.persistence.EntityManagerFactory的bean的引用。它将被用
+			来加载实体并且刷新更新。要么使用jpaEntityManagerFactory 或者jpaPersistenceUnitName。
+			jpaPersistenceUnitName: 使用持久化单元的名称（要确保该持久化单元在类路径下是可用的）。根据该规
+			范，默认的路径是/META-INF/persistence.xml)。要么使用 jpaEntityManagerFactory 或
+			者jpaPersistenceUnitName。
+		  -->
+		<property name="jpaEntityManagerFactory" ref="entityManagerFactory" />
+		<!--
+			jpaHandleTransaction: 在被使用的EntityManager 实例上，该标记表示流程引擎是否需要开始和提交/回滚事
+			物。当使用Java事物API（JTA）时，设置为false。
+		 -->
+		<property name="jpaHandleTransaction" value="true" />
+		<!--
+			jpaCloseEntityManager: 该标记表示流程引擎是否应该关闭从 EntityManagerFactory获取的 EntityManager的
+			实例。当EntityManager 是由容器管理的时候需要设置为false（例如 当使用并不是单一事物作用域的扩展持久化上
+			下文的时候）
+ 		-->
+		<property name="jpaCloseEntityManager" value="false" />
+		<property name="jobExecutorActivate" value="false" />
+	</bean>
+
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+</beans>

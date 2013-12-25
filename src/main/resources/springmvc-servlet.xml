@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context-4.0.xsd
+            http://www.springframework.org/schema/aop 
+            http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+            http://www.springframework.org/schema/tx 
+            http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+            http://www.springframework.org/schema/mvc 
+            http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+<!--Spring3.1开始的注解 HandlerMapping 
+<bean
+class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
+-->
+<!--Spring3.1开始的注解 HandlerAdapter 
+<bean
+class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>
+-->
+<mvc:annotation-driven/>
+
+	<!-- ViewResolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<!-- 将静态资源的处理经由Spring MVC框架交回Web应用服务器处理 -->
+	<mvc:default-servlet-handler />
+<!-- 配置静态资源文件的路径  springmvc 会不对这些文件进行拦截 -->
+<mvc:resources location="/resources/css/**" mapping="/resources/css"></mvc:resources>
+<mvc:resources location="/resources/js/**" mapping="/resources/js"></mvc:resources>
+<mvc:resources location="/resources/image/**" mapping="/resources/image"></mvc:resources>
+</beans>

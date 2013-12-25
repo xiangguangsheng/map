@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd ">
+
+<!--
+RESOURCE_LOCAL事务数据库本地的事务。它是数据库级别的事务，只能针对一种数据库，不支持分布式的事务。对于中小型的应用，可以采用RESOURCE_LOCAL管理EntityManager事务。
+使用RESOURCE_LOCAL管理EntityManager事务时需要注意以下几个问题。
+— 在J2SE环境中，只能使用RESOURCE_LOCAL管理EntityManager事务，并且EntityManager对象是以应用托管方式获得的。
+JTA事务（Java Transaction API）是J2EE规范中有关事务的标准。它是容器级别的事务，只能运行在J2EE服务器中。它的最大优势是可以支持分布式的事务，如果系统采用的是分布式的数据库，那么只能选择JTA管理EntityManager事务。
+使用JTA管理EntityManager事务时，需要注意以下几个问题。
+— JTA事务只能运行在J2EE的环境中，即EJB容器中和Web容器中；而在J2SE环境中只能使用RESOURCE_LOCAL管理事务。
+— 容器托管的EntityManager对象只能采用JTA的事务，而不能采用RESOURCE_LOCAL事务。
+ -->
+	<persistence-unit name="map" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<!--
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+			<property name="hibernate.max_fetch_depth" value="3" />
+			<property name="hibernate.hbm2ddl.auto" value="none" />
+			<property name="hibernate.jdbc.fetch_size" value="18" />
+			<property name="hibernate.jdbc.batch_size" value="10" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="true" />
+		</properties>-->
+	</persistence-unit>
+
+</persistence>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0">
+	<display-name>Archetype Created Web Application</display-name>
+	<!-- spring 配置 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:applicationContext.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	  <!-- spring logback -->
+	
+		<!-- 主要负责处理由　JavaBeans Introspector的使用而引起的缓冲泄露 -->
+	<listener>
+		<listener-class>
+			org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	  <!-- 将HttpRequest放入当前线程以便访问	 -->
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	<!-- spring 配置结束 -->
+	<!-- post 中文乱码解决方案 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- post 中文乱码解决方案 结束 -->
+	<!-- openSessionInViewFilter -->
+	<filter>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>openSessionInViewFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!--openSessionInViewFilter 结束 -->
+	<!-- 让springmvc支持 put delete等方式提交 -->
+	<filter>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>HiddenHttpMethodFilter</filter-name>
+    <servlet-name>/</servlet-name>
+</filter-mapping>
+	<!--让springmvc支持 put delete等方式提交  结束 -->
+	<!-- 让springmvc支持 文件上传 -->
+<filter>
+    <filter-name>MultipartFilter</filter-name>
+    <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+    <init-param>
+        <param-name>multipartResolverBeanName</param-name>
+        <param-value>filterMultipartResolver</param-value>
+    </init-param>
+</filter>
+
+<filter-mapping>
+    <filter-name>MultipartFilter</filter-name>
+    <servlet-name>/*</servlet-name>
+</filter-mapping>
+	<!--让springmvc支持 文件上传  结束 -->
+
+	<!-- spring mvc 的servlet -->
+	<servlet>
+		<servlet-name>chapter2</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 自定义springmvc的配置文件名称和路径 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springmvc-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>chapter2</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- Spring data jpa OpenEntityManagerInViewFilter 类似opensessionInView-->
+	<!--  
+<filter>
+        <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+   		<init-param>-->
+   		<!-- 指定org.springframework.orm.jpa.LocalEntityManagerFactoryBean在spring配置文件中的名称,默认值为entityManagerFactory
+   		如果LocalEntityManagerFactoryBean在spring中的名称不是entityManagerFactory,该参数一定要指定,否则会出现找不到entityManagerFactory的例外 -->
+   		<!--  
+			<param-name>entityManagerFactoryBeanName</param-name>
+			<param-value>entityManagerFactory</param-value>
+		</init-param>	
+    </filter>
+    <filter-mapping>
+        <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+-->
+	<!-- 错误处理页面 -->
+	<error-page>
+		<error-code>401</error-code>
+		<location>/common/401.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/common/403.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/common/500.jsp</location>
+	</error-page>
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/common/500.jsp</location>
+	</error-page>
+</web-app>
