@@ -35,5 +35,5 @@
 
 
 <import resource="spring-jpa.xml"/>
-<import resource="applicationContext-activiti.xml"/>
+<import resource="spring-activiti.xml"/>
 </beans>
